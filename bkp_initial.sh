@@ -1,14 +1,11 @@
 #!/bin/bash
 
-#arrumar hora e minutos. Não estão aparecendo no log - OK
-#Ver como pegar as saída dos comando, tipo $? e outros - OK
-#Substituir o nome dos usuários por %u, ver como fazer
-#Deixar os ultimos 7 logs mais novos
+#Verificar se existe o caminho do HD_EXT e do cartão de memória
 
 origem="/media/$USER/sdcard64/HD_EXT/"
 destino="/media/$USER/HD_MASSA/BACKUP/Documentos/"
 inicio=`date +%d%m%Y%H%M`
-log="/media/massariol/HD_MASSA/BACKUP/Documentos/LOG_BACKUP_SDCARD64/"
+log="/media/$USER/HD_MASSA/BACKUP/Documentos/LOG_BACKUP_SDCARD64/"
 
 function delete_logs() {
 valor=$(ls $log | wc -l)
@@ -16,7 +13,7 @@ arq=$(find $log -type f -atime +7)
 find $log -type f -atime +7 -exec rm -f {} \;
 valor2=$(ls $log | wc -l)
 total=$(($valor - $valor2))
-echo "Foram deletados os seguintes arquivos:"
+echo "Foram deletados os seguintes logs:"
 echo $arq | tr -s ' ' '\n' | sort
 echo "Total: $total"
 sleep 3
@@ -31,7 +28,8 @@ if [ $1 -eq 1 ];then
     s=$(rsync $origem -avzh --progress $destino)
 
 elif [ $1 -eq 2 ];then
-    #s=$(rsync $origem -avzh --delete --progress $destino)
+    #Não habilitar essa opção. Pode apagar dados erroneamente.
+    #s=$(rsync $origem2222 -avzh --delete --progress $destino1111)
     s=0
 fi
 
