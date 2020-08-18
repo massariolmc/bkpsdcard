@@ -2,20 +2,24 @@
 
 #Verificar se existe o caminho do HD_EXT e do cartão de memória
 
-origem="/media/$USER/sdcard64/HD_EXT/"
+origem="/media/$USER/SDCARD_64G/HD_EXT/"
 destino="/media/$USER/HD_MASSA/BACKUP/Documentos/"
 inicio=`date +%d%m%Y%H%M`
 log="/media/$USER/HD_MASSA/BACKUP/Documentos/LOG_BACKUP_SDCARD64/"
 
 function delete_logs() {
-valor=$(ls $log | wc -l)
-arq=$(find $log -type f -atime +7)
-find $log -type f -atime +7 -exec rm -f {} \;
-valor2=$(ls $log | wc -l)
-total=$(($valor - $valor2))
-echo "Foram deletados os seguintes logs:"
-echo $arq | tr -s ' ' '\n' | sort
-echo "Total: $total"
+valor=$(ls -tr $log | wc -l)
+if [ $valor -gt 7 ];then        
+    arq=($(ls -t $log))
+    for (( i=7; i<$valor; i++ )); do rm $log${arq[$i]}; done    
+    valor2=$(ls $log | wc -l)
+    total=$(($valor - $valor2))
+    echo "Foram deletados os seguintes logs:"    
+    echo "Total: $total"
+else
+    echo "Não existem arquivos a serem excluídos."
+fi
+
 sleep 3
 }
 
